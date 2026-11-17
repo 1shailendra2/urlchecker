@@ -1,7 +1,10 @@
+import pytest
 from logentry import parse_line
-def test_parse_line():
-    line=["2026-11-09 10:16:44 ERROR database timeout"]
-    result=parse_line(line[0])
+@pytest.fixture
+def error_line():
+    return "2026-11-09 10:16:44 ERROR database timeout"
+def test_parse_line(error_line):
+    result=parse_line(error_line)
     assert result.level=="ERROR"
     assert result.message=="database timeout"
 def test_empty_line():
@@ -17,3 +20,12 @@ def test_parse_line_lowercase_level():
     result=parse_line(line)
     assert result.level == "ERROR" 
     assert result.message == "database timeout"
+def test_parse_line_two_words():
+    line="2026-11-09 10:16:14"
+    result=parse_line(line)
+    assert result is None
+def test_parse_line_no_message():
+    line="2026-11-09 10:16:44 ERROR"
+    result=parse_line(line)
+    assert result.level == "ERROR"
+    assert result.message == ""
