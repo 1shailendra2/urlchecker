@@ -22,3 +22,17 @@ def test_login_wrong_password(page):
     page.locator("[data-test=\"password\"]").press("Enter")
     expect(page.locator("[data-test=\"error\"]")).to_have_text("Epic sadface: Username and password do not match any user in this service")
     expect(page).to_have_url("https://www.saucedemo.com/")
+def test_locked_out_user(page):
+    page.goto("https://www.saucedemo.com/")
+    page.locator("[data-test=\"username\"]").fill("locked_out_user")
+    page.locator("[data-test=\"password\"]").fill("secret_sauce")
+    page.locator("[data-test=\"password\"]").press("Enter")
+    expect(page.locator("[data-test=\"error\"]")).to_have_text("Epic sadface: Sorry, this user has been locked out.")
+    expect(page).to_have_url("https://www.saucedemo.com/")
+def test_checkout_missing_field(logged_in_page):
+    page = logged_in_page
+    page.locator("[data-test=\"add-to-cart-sauce-labs-backpack\"]").click()
+    page.locator("[data-test=\"shopping-cart-link\"]").click()
+    page.locator("[data-test=\"checkout\"]").click()
+    page.locator("[data-test=\"continue\"]").click()
+    expect(page.locator("[data-test=\"error\"]")).to_have_text("Error: First Name is required")
