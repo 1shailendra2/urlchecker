@@ -19,3 +19,14 @@ def test_create_post():
     assert response.json()["body"] == "hello"
     assert response.json()["userId"] == 1
     print(response.request.headers)
+
+def test_get_post_has_expected_fields():
+    response = requests.get(f"{BASE_URL}/1")
+    assert response.status_code == 200
+    data = response.json()
+    expected_fields = ["userId", "id", "title", "body"]
+    for field in expected_fields:
+        assert field in data 
+def  test_get_post_wrong():
+    response = requests.get(f"{BASE_URL}/abc")
+    assert response.status_code == 404
