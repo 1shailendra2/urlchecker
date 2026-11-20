@@ -30,3 +30,12 @@ def test_get_post_has_expected_fields():
 def  test_get_post_wrong():
     response = requests.get(f"{BASE_URL}/abc")
     assert response.status_code == 404
+def test_create_post_missing_fields():
+    body = {
+        "title": "test"
+    }
+    response = requests.post(f"{BASE_URL}", json=body)
+    assert response.status_code == 201
+    assert response.json()["title"] == "test"
+    assert "body" not in response.json()
+    assert "userId" not in response.json()
