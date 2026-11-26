@@ -13,5 +13,5 @@ jobs:
       -  name: Install dependencies
          run:  pip install pytest requests
       -  name: Run tests
-         run:  pytest api_tests test_logentry.py test_lvlfunc.py
+         run:  pytest api_tests test_logentry.py test_lvlsfunc.py
             
